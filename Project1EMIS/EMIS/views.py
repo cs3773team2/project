@@ -29,6 +29,7 @@ def patIns(request):
     template = loader.get_template('EMIS/pat_ins-info.html')
     return HttpResponse(template.render(request))
 
+#def login(request):
 #    #redirect_to = request.META.get('HTTP_REFERER', 'patient.html')
 #    if request.user.is_authenticated():
 #        return HttpResponseRedirect('/thanks/')
