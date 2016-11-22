@@ -53,14 +53,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Project1EMIS.urls'
 
-TEMPLATE_DIRS = (
-    'EMIS/templates/EMIS',
-)
+STATICFILES_DIRS = [
+    'EMIS/static/EMIS',
+]
+
+RESOURCE_ROOT = 'EMIS/'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'EMIS/templates/EMIS')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

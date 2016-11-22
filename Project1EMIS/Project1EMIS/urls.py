@@ -19,8 +19,9 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'(?i)^EMIS/', include('EMIS.urls')),
-    #url(r'^login/$', include('EMIS.urls')),
-    url(r'^login/$', auth_views.login, {'template_name': 'EMIS/index.html'}, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^pat_pers-info/', include('EMIS.urls')),
+    url(r'^pat_ins-info/', include('EMIS.urls')),
+    url(r'^login/$', auth_views.login, {'template_name': 'EMIS/login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'EMIS/logout.html'}, name='logout'),
     url(r'^admin/', admin.site.urls),
 ]
