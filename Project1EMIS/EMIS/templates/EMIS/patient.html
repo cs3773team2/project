@@ -23,7 +23,7 @@
                 {% block content %}
                 <div id="content">
                     <div class="innertube">
-						<h1>Welcome [Display Patient Name]!</h1>
+                        <h1>Welcome {{ PersonalInfo._meta.get_fields(f_name) }} !</h1>
                         <h3>Please select on option from the menu</h3>
 					</div>
 				</div>

@@ -1,12 +1,10 @@
-<link rel="stylesheet" href="../../static/EMIS/style.css">
+<!--link rel="stylesheet" href="../../static/EMIS/style.css"-->
 {% extends "patient.html" %}
 {% block content %}
     <div id="content">
         <div class="innertube">
             <h3>Patient Information</h3>
-            <form action="" method = "POST">
-                {% csrf_token %}
-                <!--{{ form }}-->
+            <form action="{% url 'patPI' %}" method = "post">
                 <table cellpadding="0" class="main">
                     <tbody>
                         <tr>
@@ -17,7 +15,7 @@
                         <tr>
                             <td><input type="text" name="f_name"></td>
                             <td><input type="text" name="l_name"></td>
-                            <td><input type="text" name="mi"></td>
+                            <td><input type="text" name="mid_in"></td>
                         </tr>
                         <tr height="15"></tr>
                         <tr>
