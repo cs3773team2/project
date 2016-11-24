@@ -13,7 +13,7 @@ def logout(request):
 @login_required()
 def patient(request):
     template = loader.get_template('EMIS/patient.html')
-    context = {'pat_name': request.s}
+    #context = {'pat_name': request.s}
     return HttpResponse(template.render(request))
 
 @login_required()
