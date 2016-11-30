@@ -11,7 +11,7 @@
     <body>
         <div class="login-card">
             <h1>EMIS Log-in</h1><br>
-            <form action="" method = "POST">
+           <form action="/auth_view/" method="post">
                 {% csrf_token %}
                 {{ form }}
                 <!--input type="text" name="user" placeholder="Username">
@@ -19,7 +19,7 @@
                 <input type="submit" class="login login-submit" value="login">
             </form>
             <div class="login-help">
-                <a href="#">Register</a> • <a href="#">Forgot Password</a>
+                <a href="/createAccount/">Need to Register?</a> • <a href="#">Forgot Password</a>
             </div>
         </div>
     </body>

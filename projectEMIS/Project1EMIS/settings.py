@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'EMIS',
-    'EMIS.apps.EmisConfig',
+    'EMIS',
+    # 'EMIS.apps.EmisConfig',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +131,6 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/emis/patient'
 
 APPEND_SLASH=False
+
+
+AUTH_PROFILE_MODULE = 'EMIS.PersonalInfo'
