@@ -1,15 +1,16 @@
 from django.conf.urls import url
 from . import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-   # url(r'^$', views.index, name='index'),
     url(r'^$', views.login, name='login'),
-  #  url(r'^patient', views.patient, name='patient'),
+    #  url(r'^patient', views.patient, name='patient'),
     url(r'^pat_pers-info/$', views.patPI, name='patPI'),
     url(r'^pat_ins-info/$', views.patIns, name='patIns'),
-    url(r'^createAccount/$', views.createAccount, name='createAccount'),
+    url(r'^create_account/$', views.create_account, name='create_account'),
     url(r'^splash/$', views.splash, name='splash'),
-
+    url(r'^logout_view/$', views.logout_view, name='logout_view'),
+    url(r'^forgot_password/$', views.forgot_password, name='forgot_password_view'),
+    url(r'^verify_password/$', views.verify_password, name='verify_password_view'),
+    url(r'^auth/$', views.auth_view),
 
 ]

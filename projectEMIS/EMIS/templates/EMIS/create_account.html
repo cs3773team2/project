@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="login-card">
+        <h1>Create EMIS Account</h1><br>
+        <form action="/createAccount/" method="post">
+            {% csrf_token %}
+            <ul>
+                {{ form.as_ul }}
+            </ul>
+            <input type="submit" value="Submit" />
+        </form>
+        <div class="login-help">
+            <a href="/login/">Login</a> • <a href="/forgot_password/">Forgot Password</a>
+        </div>
+    </div>
+{% endblock %}

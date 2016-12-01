@@ -1,54 +1,111 @@
-from django.contrib.auth.models import User
-from EMIS.forms import *
+import uuid
+
+from EMIS.forms import UserForm
 from django.shortcuts import *
 from django.http import *
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate
-from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib import auth
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import requires_csrf_token
+from models import EMISUser
+from django.core.mail import EmailMessage
 
-from EMIS import *
 
-def index(request):
-    if not request.user.is_authenticated():
-        return redirect('/login/')
-    else:
-        template = loader.get_template('EMIS/home.html')
-        return HttpResponse(template.render(request))
-
+@requires_csrf_token
 def login(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        username = request.POST.get('username', None)
-        email = request.POST.get('email', None)
-        password = request.POST.get('username', None)
-        template = loader.get_template('EMIS/splash.html')
-    return HttpResponseRedirect('/login/')
+    return render(request, 'login.html')
 
+
+@login_required(login_url='/')
 def splash(request):
-    template = loader.get_template('EMIS/splash.html')
-    return HttpResponse(template.render(request))
+    return render(request, 'EMIS/splash.html', context={'user': request.user})
 
-def logout(request):
+
+def verify_password(request):
+    if request.method == 'GET':
+        token = request.GET.get('token', None)
+        try:
+            EMISUser.objects.get(unlock_code=token)
+        except EMISUser.DoesNotExist:
+            return redirect('/')
+        return render(request, 'EMIS/reset_password.html', context={'token': token})
+    elif request.method == 'POST':
+        token = request.POST.get('token', None)
+        password = request.POST.get('password', None)
+        verify_password_value = request.POST.get('verify_password', None)
+        if password != verify_password_value:  # Todo - Make sure I change this to use a form in forms.py instead to enforce the password restrictions
+            error = "Passwords do not match.  Please try again."
+            return render(request, 'EMIS/reset_password.html', context={'form': {'errors': error}})
+        if token:
+            try:
+                emis_user = EMISUser.objects.get(unlock_code=token)
+                emis_user.locked_out = False
+                emis_user.login_attempts = 0
+                emis_user.save()
+                user = User.objects.get(email=emis_user.user.email)
+                user.set_password(password)
+                user.save()
+                return redirect('/')
+            except EMISUser.DoesNotExist:
+                return render(request, 'EMIS/reset_password.html',
+                              context={'form': {'errors': 'SOMETHING WENT WRONG! THAT ACCOUNT DOES NOT EXIST!'}})
+    else:
+        return Http404
+
+
+def forgot_password(request):
+    def render_forgot_password_page(context=None):
+        return render(request, 'EMIS/forgot_password.html', context=context)
+
+    if request.method == 'GET':
+        return render_forgot_password_page()
+    elif request.method == 'POST':
+        email = request.POST.get('email_address', None)
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user = None
+        if user:
+            emis_user = EMISUser.objects.get(user=user)
+            token = uuid.uuid4()
+            emis_user.unlock_code = token
+            emis_user.save()
+            message = """
+                <a href="http://%s/verify_password/?token=%s">Click here</a> unlock your account.
+            """ % (request.META.get('HTTP_HOST'), token)
+            email = EmailMessage('EMIS - Forgot Password Notification', message, to=[user.email])
+            email.content_subtype = 'html'
+            email.send()
+            return render_forgot_password_page(
+                context={'form': {'message': 'An email was sent to %s.  Please follow the instructions' % user.email}})
+        else:
+            return render(request, 'EMIS/forgot_password.html', context={
+                'form': {'errors': "We do not have record of that email address.  Please try another email address."}})
+    else:
+        return Http404
+
+
+def logout_view(request):
+    logout(request)
     template = loader.get_template('EMIS/logout.html')
     return HttpResponse(template.render(request))
-
-@login_required(login_url='/') #if not logged in redirect to /
-def home(request):
-    return render(request, 'home.html')
 
 
 @login_required()
 def patient(request):
     template = loader.get_template('EMIS/patient.html')
-    #context = {'pat_name': request.s}
+    # context = {'pat_name': request.s}
     return HttpResponse(template.render(request))
+
 
 @login_required()
 def patPI(request):
     template = loader.get_template('EMIS/pat_pers-info.html')
     return HttpResponse(template.render(request))
+
 
 @login_required()
 def patIns(request):
@@ -57,23 +114,43 @@ def patIns(request):
 
 
 def auth_view(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    email = request.POST['email']
-    user = authenticate(username = username, password = password)
+    def render_locked_out_page():
+        return render(request, 'login.html',
+                      context={'form': {'locked_out': True}})
 
-    if user is not None:
-        login(request, user)
-        return HttpResponseRedirect(reverse('home'))
-    else:
-        return HttpResponseRedirect('/')
-
-def logout_view(request):
-     logout(request)
-    # Redirect to a success page.
-
-def createAccount(request):
     if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(username=username, password=password)
+        try:
+            emisuser = EMISUser.objects.get(user__username=username)
+        except EMISUser.DoesNotExist:
+            emisuser = None
+        attempts = 0
+        if user is not None:
+            auth.login(request, user)
+            if emisuser:
+                if emisuser.locked_out:
+                    return render_locked_out_page()
+                emisuser.login_attempts = 0
+                emisuser.save()
+            return HttpResponseRedirect(reverse('splash'))
+        else:
+            if emisuser:
+                emisuser.login_attempts += 1
+                emisuser.save()
+                attempts = emisuser.login_attempts
+                if attempts > 3:
+                    emisuser.locked_out = True
+                    emisuser.save()
+                    return render_locked_out_page()
+            return render(request, 'login.html',
+                          context={'form': {'errors': 'Invalid Credentials', 'attempts': attempts}})
+
+
+def create_account(request):
+    if request.method == "POST":
+        print("******")
         form = UserForm(request.POST)
         username = request.POST.get('username', None)
         email = request.POST.get('email', None)
@@ -82,22 +159,14 @@ def createAccount(request):
             user, created = User.objects.get_or_create(username=username, email=email)
             if created:
                 user.set_password(password)  # This line will hash the password
+                print("USER PASSWORD IS: " + username + " " + password + "*******************************************")
                 user.save()  # DO NOT FORGET THIS LINE
-                user = authenticate(username=username, password=password)
+                EMISUser.objects.create(user=user)
+                user = auth.authenticate(username=username, password=password)
                 if user is not None:
-                    login(user)
-                    return HttpResponseRedirect('/splash/')
-                # No backend authenticated the credentials
-               # login(user)
+                    auth.login(request, user)
+                    return HttpResponseRedirect('/splash/')  ##created account is successfully logged on now
                 return HttpResponseRedirect('/login/')
-
-            #login(user)
-            # redirect, or however you want to get to the main view
-            #return HttpResponseRedirect('/login/')
     else:
         form = UserForm()
-    return render(request, 'home.html', {'form': form})
-
-#def createAccount(request):
-#    template = loader.get_template('EMIS/createAccount.html')
-#    return HttpResponse(template.render(request))
+    return render(request, 'create_account.html', {'form': form})

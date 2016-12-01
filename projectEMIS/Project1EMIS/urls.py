@@ -17,15 +17,12 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import views
-from EMIS.forms import *
+from EMIS.forms import LoginForm
 
 urlpatterns = [
     url(r'', include('EMIS.urls')),
-    #url(r'^login/$', auth_views.login, {'template_name': 'EMIS/login.html'}, name='login'),
-    #url(r'^logout/$', auth_views.logout, {'template_name': 'EMIS/logout.html'}, name='logout'),
     url(r'^logout/$', views.logout, {'next_page': '/login'}),
-    # url(r'^login/$', views.login, {'template_name': 'login.html'}),
-   # url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}),
     url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}),
     url(r'^admin/', admin.site.urls),
+
 ]
