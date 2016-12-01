@@ -2,7 +2,7 @@
 {% block content %}
     <div class="login-card">
         <h1>Create EMIS Account</h1><br>
-        <form action="/createAccount/" method="post">
+        <form action="/create_account/" method="post">
             {% csrf_token %}
             <ul>
                 {{ form.as_ul }}

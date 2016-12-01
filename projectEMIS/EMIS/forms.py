@@ -36,8 +36,8 @@ class UserForm(ModelForm):
     username = forms.CharField(label="Username", max_length=30,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'username'}))
 
-    if username_present(username): # Comment this out when running python manage.py makemigrations or migrate
-        raise forms.ValidationError("The username already exists.")
+#    if username_present(username): # Comment this out when running python manage.py makemigrations or migrate
+#        raise forms.ValidationError("The username already exists.")
 
     email = forms.CharField(label="Email", max_length=30,
                             widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'email'}))
