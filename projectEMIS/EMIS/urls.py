@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^forgot_password/$', views.forgot_password, name='forgot_password_view'),
     url(r'^verify_password/$', views.verify_password, name='verify_password_view'),
     url(r'^auth/$', views.auth_view),
-
+    url(r'^patient_home/$', views.patient_home, name='patient_home'),
 ]

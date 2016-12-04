@@ -1,10 +1,10 @@
 <!--link rel="stylesheet" href="../../static/EMIS/style.css"-->
 {% extends "patient.html" %}
-{% block content %}
+{% block main %}
     <div id="content">
         <div class="innertube">
             <h3>Patient Information</h3>
-            <form action="{% url 'patPI' %}" method = "post">
+            <form action="/patPI/" method = "post">
                 <table cellpadding="0" class="main">
                     <tbody>
                         <tr>

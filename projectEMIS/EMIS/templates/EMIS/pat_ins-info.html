@@ -1,11 +1,10 @@
 <link rel="stylesheet" href="../../static/EMIS/style.css">
 {% extends "patient.html" %}
-{% block content %}
+{% block main %}
     <div id="content">
         <div class="innertube">
             <h3>Insurance Information</h3>
-            <form action="" method = "POST">
-                {% csrf_token %}
+            <form action="/patIns/" method = "POST">
                 <!--{{ form }}-->
                 <table cellpadding="0" class="main">
                     <tbody>

@@ -94,23 +94,19 @@ def logout_view(request):
     return HttpResponse(template.render(request))
 
 
-@login_required()
-def patient(request):
-    template = loader.get_template('EMIS/patient.html')
-    # context = {'pat_name': request.s}
-    return HttpResponse(template.render(request))
+@login_required(login_url='/')
+def patient_home(request):
+    return render(request, 'EMIS/patient.html', context={'user': request.user})
 
 
-@login_required()
+@login_required(login_url='/')
 def patPI(request):
-    template = loader.get_template('EMIS/pat_pers-info.html')
-    return HttpResponse(template.render(request))
+    return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
 
 
-@login_required()
+@login_required(login_url='/')
 def patIns(request):
-    template = loader.get_template('EMIS/pat_ins-info.html')
-    return HttpResponse(template.render(request))
+    return render(request, 'EMIS/pat_ins-info.html', context={'user': request.user})
 
 
 def auth_view(request):
