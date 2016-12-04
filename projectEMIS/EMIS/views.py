@@ -108,6 +108,9 @@ def patPI(request):
 def patIns(request):
     return render(request, 'EMIS/pat_ins-info.html', context={'user': request.user})
 
+@login_required(login_url='/')
+def doctor_home(request):
+    return render(request, 'EMIS/doctor.html', context={'user': request.user})
 
 def auth_view(request):
     def render_locked_out_page():
@@ -130,7 +133,12 @@ def auth_view(request):
                     return render_locked_out_page()
                 emisuser.login_attempts = 0
                 emisuser.save()
-            return HttpResponseRedirect(reverse('splash'))
+            if user.groups.filter (name='Patient'):
+                return HttpResponseRedirect(reverse('patient_home'))
+            elif user.groups.filter (name='Doctor'):
+                return HttpResponseRedirect(reverse('doctor_home'))
+            else:
+                return HttpResponseRedirect(reverse('splash'))
         else:
             if emisuser:
                 emisuser.login_attempts += 1
