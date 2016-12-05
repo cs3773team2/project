@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+        <div class="login-card">
+            <p style="color:red" align="center"><strong>You are not authorized to view this page.</strong></p>
+            <div class="login">
+            {% for group in user.groups.all %}
+                {% if group.name == 'Patient' %}
+                    <a href="/patient_home/">Return Home</a>
+                {% else %}
+                    {% if group.name == 'Doctor' %}
+                        <a href="/doctor_home/">Return Home</a>
+                    {% else %}
+                        {% if group.name == 'Clinical_Staff' %}
+                            <a href="/doctor_home/">Return Home</a>
+                        {% else %}
+                            {% if group.name == 'Nurse' %}
+                                <a href="/doctor_home/">Return Home</a>
+                            {% else %}
+                                {% if group.name == 'Pharmacy' %}
+                                    <a href="/doctor_home/">Return Home</a>
+                                {% else %}
+                                    {% if group.name == 'Lab' %}
+                                        <a href="/doctor_home/">Return Home</a>
+                                    {% else %}
+                                        {% if group.name == 'Insurance' %}
+                                            <a href="/doctor_home/">Return Home</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            or <a href="/login/">Login</a>
+            </div>
+        </div>
+{%  endblock %}

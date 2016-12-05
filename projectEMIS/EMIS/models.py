@@ -12,6 +12,15 @@ class EMISUser(models.Model):
     login_attempts = models.IntegerField(default=0)
     locked_out = models.BooleanField(default=False)
     unlock_code = models.CharField(max_length=36, default='')
+    mid_in = models.CharField(max_length=1, null=True)
+    dob = models.DateField(null=True)
+    age = models.IntegerField(null=True)
+    sex = models.CharField(max_length=1, null=True, choices=SEX_CHOICES)
+    address = models.CharField(max_length=50, null=True)
+    city = models.CharField(max_length=30, null=True)
+    state = models.CharField(max_length=20, null=True)
+    zip = models.IntegerField(null=True)
+    phone = models.IntegerField(null=True)
 
 
 class PersonalInfo(models.Model):

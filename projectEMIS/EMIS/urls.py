@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^auth/$', views.auth_view),
     url(r'^patient_home/$', views.patient_home, name='patient_home'),
     url(r'^doctor_home/$', views.doctor_home, name='doctor_home'),
+    url(r'^user_not_auth/$', views.user_not_auth, name='user_not_auth'),
 ]

@@ -3,7 +3,7 @@ import uuid
 from EMIS.forms import UserForm
 from django.shortcuts import *
 from django.http import *
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import auth
@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
 from . models import EMISUser
 from django.core.mail import EmailMessage
+from .group_filter import *
 
 
 @requires_csrf_token
@@ -94,7 +95,7 @@ def logout_view(request):
     return HttpResponse(template.render(request))
 
 
-@login_required(login_url='/')
+@patient
 def patient_home(request):
     return render(request, 'EMIS/patient.html', context={'user': request.user})
 
@@ -108,9 +109,15 @@ def patPI(request):
 def patIns(request):
     return render(request, 'EMIS/pat_ins-info.html', context={'user': request.user})
 
+
+@doctor
 @login_required(login_url='/')
 def doctor_home(request):
     return render(request, 'EMIS/doctor.html', context={'user': request.user})
+
+@login_required(login_url='/')
+def user_not_auth(request):
+    return render(request, 'EMIS/user_not_auth.html', context={'user': request.user})
 
 def auth_view(request):
     def render_locked_out_page():
@@ -133,9 +140,9 @@ def auth_view(request):
                     return render_locked_out_page()
                 emisuser.login_attempts = 0
                 emisuser.save()
-            if user.groups.filter (name='Patient'):
+            if user.groups.filter(name='Patient'):
                 return HttpResponseRedirect(reverse('patient_home'))
-            elif user.groups.filter (name='Doctor'):
+            elif user.groups.filter(name='Doctor'):
                 return HttpResponseRedirect(reverse('doctor_home'))
             else:
                 return HttpResponseRedirect(reverse('splash'))
