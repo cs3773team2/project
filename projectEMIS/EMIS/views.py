@@ -103,7 +103,8 @@ def patient_home(request):
 
 @login_required(login_url='/')
 def patPI(request):
-    UserFormSet = modelformset_factory(EMISUser, fields=('__all__'))
+    UserFormSet = modelformset_factory(EMISUser, fields=('user','mid_in','dob','age','sex',
+                                                         'address','city','state','zip','phone',))
     if request.method == 'POST':
         formset = UserFormSet(request.POST, request.FILES)
         if formset.is_valid():
