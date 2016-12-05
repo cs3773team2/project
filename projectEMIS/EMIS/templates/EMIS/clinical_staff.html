@@ -24,15 +24,12 @@
 
 			<nav id="nav">
 				<div class="innertube">
-					<h3>Patient Menu</h3>
+					<h3>Clinical Staff Menu</h3>
 					<ul>
-						<li><a href="#">View Medical Record</a></li>
-						<li><a href="#">Add Medical History</a></li>
-						<li><a href="{% url 'patPI' %}">View Personal Info</a></li>
-						<li><a href="{% url 'patIns' %}">View Insurance Info</a></li>
-						<li><a href="#">Schedule Appointment</a></li>
-                        <li><a href="#">Message Clinic</a></li>
-                        <li><a href="#">View/Pay Bill Online</a></li>
+						<li><a href="#">View Patient Information</a></li>
+						<li><a href="#">View Calendar</a></li>
+						<li><a href="#">Message Patient</a></li>
+						<li><a href="#">Billing Application</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -40,7 +37,7 @@
 
         <footer id="footer">
 			<div class="innertube">
-				<li align="left"><a href="/patient_home/">Patient Home</a> {% block nav %} {% endblock %}</li>
+				<li align="left"><a href="/patient_home/">Clinical Staff Home</a> {% block nav %} {% endblock %}</li>
 			</div>
 		</footer>
 	</body>

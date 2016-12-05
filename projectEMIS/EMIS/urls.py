@@ -3,7 +3,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.login, name='login'),
-    #  url(r'^patient', views.patient, name='patient'),
     url(r'^pat_pers-info/$', views.patPI, name='patPI'),
     url(r'^pat_ins-info/$', views.patIns, name='patIns'),
     url(r'^create_account/$', views.create_account, name='create_account'),
@@ -14,5 +13,7 @@ urlpatterns = [
     url(r'^auth/$', views.auth_view),
     url(r'^patient_home/$', views.patient_home, name='patient_home'),
     url(r'^doctor_home/$', views.doctor_home, name='doctor_home'),
+    url(r'^cstaff_home/$', views.cstaff_home, name='cstaff_home'),
+    url(r'^nurse_home/$', views.nurse_home, name='nurse_home'),
     url(r'^user_not_auth/$', views.user_not_auth, name='user_not_auth'),
 ]

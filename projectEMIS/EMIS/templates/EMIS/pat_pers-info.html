@@ -4,7 +4,7 @@
     <div id="content">
         <div class="innertube">
             <h3>Patient Information</h3>
-            <form action="/patPI/" method = "post">
+            <!--form action="/patPI/" method = "post">
                 <table cellpadding="0" class="main">
                     <tbody>
                         <tr>
@@ -59,6 +59,14 @@
                 </table>
                 <br>
                 <input type="submit" class="login login-submit" value="Submit Updates">
+            </form-->
+            <form method="post" action="">
+                {{ formset.management_form }}
+                <table>
+                    {% for form in formset %}
+                        {{ form }}
+                    {% endfor %}
+                </table>
             </form>
         </div>
     </div>

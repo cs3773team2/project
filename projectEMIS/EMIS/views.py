@@ -13,6 +13,7 @@ from django.views.decorators.csrf import requires_csrf_token
 from . models import EMISUser
 from django.core.mail import EmailMessage
 from .group_filter import *
+from django.forms import modelformset_factory
 
 
 @requires_csrf_token
@@ -102,7 +103,16 @@ def patient_home(request):
 
 @login_required(login_url='/')
 def patPI(request):
-    return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
+    UserFormSet = modelformset_factory(EMISUser, fields=('__all__'))
+    if request.method == 'POST':
+        formset = UserFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            formset.save()
+            #return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
+            return render(request, 'EMIS/pat_pers-info.html', {'formset': formset})
+    else:
+        formset = UserFormSet()
+    return render(request, 'EMIS/pat_pers-info.html', {'formset': formset})
 
 
 @login_required(login_url='/')
@@ -111,9 +121,16 @@ def patIns(request):
 
 
 @doctor
-@login_required(login_url='/')
 def doctor_home(request):
     return render(request, 'EMIS/doctor.html', context={'user': request.user})
+
+@clinical_staff
+def cstaff_home(request):
+    return render(request, 'EMIS/clinical_staff.html', context={'user': request.user})
+
+@nurse
+def nurse_home(request):
+    return render(request, 'EMIS/nurse.html', context={'user': request.user})
 
 @login_required(login_url='/')
 def user_not_auth(request):
@@ -144,6 +161,10 @@ def auth_view(request):
                 return HttpResponseRedirect(reverse('patient_home'))
             elif user.groups.filter(name='Doctor'):
                 return HttpResponseRedirect(reverse('doctor_home'))
+            elif user.groups.filter(name='Clinical_Staff'):
+                return HttpResponseRedirect(reverse('cstaff_home'))
+            elif user.groups.filter(name='Nurse'):
+                return HttpResponseRedirect(reverse('nurse_home'))
             else:
                 return HttpResponseRedirect(reverse('splash'))
         else:
@@ -176,7 +197,7 @@ def create_account(request):
                 user = auth.authenticate(username=username, password=password)
                 if user is not None:
                     auth.login(request, user)
-                    return HttpResponseRedirect('/splash/')  ##created account is successfully logged on now
+                    return HttpResponseRedirect('/patient_home/')  ##created account is successfully logged on now
                 return HttpResponseRedirect('/login/')
     else:
         form = UserForm()

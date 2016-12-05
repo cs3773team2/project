@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     <body>
-
         <header id="header">
 			<div class="innertube">
 				<br><h1>EMIS Portal</h1>
@@ -25,16 +24,15 @@
 
 			<nav id="nav">
 				<div class="innertube">
-					<h3>Patient Options</h3>
+					<h3>Doctor Menu</h3>
 					<ul>
-						<li><a href="#">Doctor Page!</a></li>
-						<li><a href="#">Add Medical History</a></li>
-						<li><a href="{% url 'patPI' %}">View/Update Personal Info</a></li>
-						<li><a href="{% url 'patIns' %}">View/Update Insurance Info</a></li>
-						<li><a href="#">Schedule Appointment</a></li>
-                        <li><a href="#">Message Clinic</a></li>
-                        <li><a href="#">View/Pay Bill Online</a></li>
-					</ul>
+						<li><a href="#">View Medical Record</a></li>
+						<li><a href="#">Add Medical Record</a></li>
+						<li><a href="#">View Patient Information</a></li>
+						<li><a href="#">View Calendar</a></li>
+						<li><a href="#">Submit Prescription</a></li>
+                        <li><a href="#">Submit Lab Tests</a></li>
+                    </ul>
 				</div>
 			</nav>
 		</div>
