@@ -60,13 +60,10 @@
                 <br>
                 <input type="submit" class="login login-submit" value="Submit Updates">
             </form-->
-            <form method="post" action="">
+            <form method="post" action="/patPI/">
                 {% csrf_token %}
-                {{ formset.management_form }}
                 <table>
-                    {% for form in formset %}
-                        {{ form }}
-                    {% endfor %}
+                    {{ form }}
                 </table>
             <input type="submit" class="login login-submit" value="Submit Updates">
             </form>

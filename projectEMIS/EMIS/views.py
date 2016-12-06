@@ -1,6 +1,6 @@
 import uuid
 
-from EMIS.forms import UserForm
+from . forms import *
 from django.shortcuts import *
 from django.http import *
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -12,8 +12,9 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
 from . models import EMISUser
 from django.core.mail import EmailMessage
-from .group_filter import *
+from . group_filter import *
 from django.forms import modelformset_factory
+from django.template import RequestContext
 
 
 @requires_csrf_token
@@ -103,17 +104,14 @@ def patient_home(request):
 
 @login_required(login_url='/')
 def patPI(request):
-    UserFormSet = modelformset_factory(EMISUser, fields=('user','mid_in','dob','age','sex',
-                                                         'address','city','state','zip','phone',))
     if request.method == 'POST':
-        formset = UserFormSet(request.POST, request.FILES)
-        if formset.is_valid():
-            formset.save()
-            #return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
-            return render(request, 'EMIS/pat_pers-info.html', {'formset': formset})
+        form = PersonalInfoForm(request.POST)
+        if form.is_valid():
+            return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
     else:
-        formset = UserFormSet()
-    return render(request, 'EMIS/pat_pers-info.html', {'formset': formset})
+        form = PersonalInfoForm()
+
+    return render(request, 'EMIS/pat_pers-info.html', {'form': form})
 
 
 @login_required(login_url='/')

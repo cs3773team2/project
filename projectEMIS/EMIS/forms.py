@@ -50,8 +50,7 @@ class UserForm(ModelForm):
     # email = forms.EmailField(required=True)
     class Meta:
         model = User
-        #fields = ('username', 'email', 'password')
-        fields = '__all__'
+        fields = ('username', 'email', 'password')
 
     # def save(self, commit=True):
     #     user = super(UserForm, self).save(commit=False)
