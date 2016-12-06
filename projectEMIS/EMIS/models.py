@@ -15,7 +15,6 @@ class EMISUser(models.Model):
 
 
 class PersonalInfo(models.Model):
-    #f_name = models.OneToOneField(User, on_delete=models.CASCADE)
     f_name = models.CharField(max_length=20, null=True)
     l_name = models.CharField(max_length=30, null=True)
     mid_in = models.CharField(max_length=1, null=True)
@@ -27,9 +26,6 @@ class PersonalInfo(models.Model):
     state = models.CharField(max_length=20, null=True)
     zip = models.IntegerField(null=True)
     phone = models.IntegerField(null=True)
-    #email = models.CharField(max_length=25, null=True)
-    #password = models.CharField(max_length=100, null=True)
-    #username = models.CharField(max_length=100, null=True)
 
     # class Meta:
     #     db_table = u'PersonalInfo'
