@@ -20,12 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qe9t5tvck9sxd2h(!x_q!m_pemz2$x24u82088h_@pi574*^5h'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -139,3 +133,14 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'cs3773team2@gmail.com'
 EMAIL_HOST_PASSWORD = '!!Test1234!!'
 EMAIL_PORT = 587
+
+
+if os.environ.get('USERNAME') == 'dgreenlees28':
+	PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+	STATIC_ROOT = os.path.join(PROJECT_PATH, "static")
+	DEBUG = False
+	ALLOWED_HOSTS = ['*']
+else:
+	DEBUG = True
+	ALLOWED_HOSTS = []
+
