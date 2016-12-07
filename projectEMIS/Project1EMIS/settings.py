@@ -134,8 +134,7 @@ EMAIL_HOST_USER = 'cs3773team2@gmail.com'
 EMAIL_HOST_PASSWORD = '!!Test1234!!'
 EMAIL_PORT = 587
 
-
-if os.environ.get('USERNAME') == 'dgreenlees28':
+if os.environ.get('HOST_NAME') == 'dgreenlees28.pythonanywhere.com':
 	PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 	STATIC_ROOT = os.path.join(PROJECT_PATH, "static")
 	DEBUG = False
