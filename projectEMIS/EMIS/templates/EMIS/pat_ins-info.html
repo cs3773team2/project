@@ -4,34 +4,13 @@
     <div id="content">
         <div class="innertube">
             <h3>Insurance Information</h3>
-            <form action="/patIns/" method = "POST">
-                <!--{{ form }}-->
-                <table cellpadding="0" class="main">
-                    <tbody>
-                        <tr>
-                            <td><div align="left">Insurance Name</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="ins_name" class="formtext"></td>
-                        </tr>
-                        <tr height="15"></tr>
-                        <tr>
-                            <td><div align="left">Member ID</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="memID"></td>
-                        </tr>
-                        <tr height="15"></tr>
-                        <tr>
-                            <td><div align="left">Group ID</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="grpID"></td>
-                        </tr>
-                    </tbody>
+            <form method="post" action="/pat_pers-info/">
+                {% csrf_token %}
+                <table>
+                    {{ form }}
                 </table>
-                <br>
-                <input type="submit" class="login login-submit" value="Submit Updates">
+            <br>
+            <input type="submit" class="login login-submit" value="Submit Updates">
             </form>
         </div>
     </div>

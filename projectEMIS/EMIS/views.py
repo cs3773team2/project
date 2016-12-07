@@ -121,24 +121,51 @@ def patPI(request):
 
 @login_required(login_url='/')
 def patIns(request):
-    return render(request, 'EMIS/pat_ins-info.html', context={'user': request.user})
+    if request.method == 'POST':
+        form = InsInfoForm()
+        if form.is_valid():
+            form.save()
+            return render(request, 'EMIS/pat_ins-info.html', context={'user': request.user})
+    else:
+        form = InsInfoForm()
+
+    return render(request, 'EMIS/pat_ins-info.html', {'form': form})
 
 
 @doctor
 def doctor_home(request):
     return render(request, 'EMIS/doctor.html', context={'user': request.user})
 
+
 @clinical_staff
 def cstaff_home(request):
     return render(request, 'EMIS/clinical_staff.html', context={'user': request.user})
+
 
 @nurse
 def nurse_home(request):
     return render(request, 'EMIS/nurse.html', context={'user': request.user})
 
+
+@lab
+def lab_home(request):
+    return render(request, 'EMIS/lab.html', context={'user': request.user})
+
+
+@pharmacy
+def pharmacy_home(request):
+    return render(request, 'EMIS/pharmacy.html', context={'user': request.user})
+
+
+@insurance
+def insurance_home(request):
+    return render(request, 'EMIS/insurance.html', context={'user': request.user})
+
+
 @login_required(login_url='/')
 def user_not_auth(request):
     return render(request, 'EMIS/user_not_auth.html', context={'user': request.user})
+
 
 def auth_view(request):
     def render_locked_out_page():
@@ -169,6 +196,12 @@ def auth_view(request):
                 return HttpResponseRedirect(reverse('cstaff_home'))
             elif user.groups.filter(name='Nurse'):
                 return HttpResponseRedirect(reverse('nurse_home'))
+            elif user.groups.filter(name='Lab'):
+                return HttpResponseRedirect(reverse('lab_home'))
+            elif user.groups.filter(name='Pharmacy'):
+                return HttpResponseRedirect(reverse('pharmacy_home'))
+            elif user.groups.filter(name='Insurance'):
+                return HttpResponseRedirect(reverse('insurance_home'))
             else:
                 return HttpResponseRedirect(reverse('splash'))
         else:

@@ -20,7 +20,27 @@ class PersonalInfoForm(ModelForm):
         model = PersonalInfo
         fields = ('mid_in','dob','age','sex',
                   'address','city','state','zip','phone')
+        labels = {
+            'mid_in': 'Insurance Name',
+            'dob': 'Member ID',
+            'age': 'Age',
+            'sex': 'Gender',
+            'address': 'Address',
+            'city': 'City',
+            'state': 'State',
+            'zip': 'Zip Code',
+            'phone': 'Phone',
+        }
 
+class InsInfoForm(ModelForm):
+    class Meta:
+        model = PersonalInfo
+        fields = ('ins_name','ins_mem_id','ins_grp_id')
+        labels = {
+            'ins_name': 'Insurance Name',
+            'ins_mem_id': 'Member ID',
+            'ins_grp_id': 'Group ID',
+        }
 
 ##checks if username exists
 def username_present(username):

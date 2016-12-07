@@ -26,6 +26,9 @@ class PersonalInfo(models.Model):
     state = models.CharField(max_length=20, default='')
     zip = models.IntegerField(default='')
     phone = models.IntegerField(default='')
+    ins_name = models.CharField(max_length=30, default='')
+    ins_mem_id = models.IntegerField(default='')
+    ins_grp_id = models.IntegerField(default='')
 #    objects = UserManager()
 
 
