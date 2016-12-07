@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager
+from django.db.models.signals import post_save
 
 SEX_CHOICES = (
     ('M', 'Male'),
@@ -15,17 +16,18 @@ class EMISUser(models.Model):
 
 
 class PersonalInfo(models.Model):
-    f_name = models.CharField(max_length=20, null=True)
-    l_name = models.CharField(max_length=30, null=True)
-    mid_in = models.CharField(max_length=1, null=True)
-    dob = models.DateField(null=True)
-    age = models.IntegerField(null=True)
-    sex = models.CharField(max_length=1, null=True, choices=SEX_CHOICES)
-    address = models.CharField(max_length=50, null=True)
-    city = models.CharField(max_length=30, null=True)
-    state = models.CharField(max_length=20, null=True)
-    zip = models.IntegerField(null=True)
-    phone = models.IntegerField(null=True)
+    #user = models.OneToOneField(User, on_delete=models.CASCADE)
+    mid_in = models.CharField(max_length=1, default='')
+    dob = models.DateField(default='')
+    age = models.IntegerField(default='')
+    sex = models.CharField(max_length=1, choices=SEX_CHOICES, default='')
+    address = models.CharField(max_length=50, default='')
+    city = models.CharField(max_length=30, default='')
+    state = models.CharField(max_length=20, default='')
+    zip = models.IntegerField(default='')
+    phone = models.IntegerField(default='')
+#    objects = UserManager()
+
 
     # class Meta:
     #     db_table = u'PersonalInfo'

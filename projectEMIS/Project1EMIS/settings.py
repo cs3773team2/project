@@ -131,8 +131,6 @@ LOGIN_REDIRECT_URL = '/emis/patient'
 
 APPEND_SLASH = False
 
-AUTH_PROFILE_MODULE = 'EMIS.PersonalInfo'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

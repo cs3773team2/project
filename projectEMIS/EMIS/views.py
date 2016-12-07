@@ -13,6 +13,7 @@ from django.views.decorators.csrf import requires_csrf_token
 from . models import EMISUser
 from django.core.mail import EmailMessage
 from . group_filter import *
+from django.contrib.auth.models import Group
 from django.forms import modelformset_factory
 from django.template import RequestContext
 
@@ -104,9 +105,13 @@ def patient_home(request):
 
 @login_required(login_url='/')
 def patPI(request):
+    #form = PersonalInfoForm()
+    #if form.objects.get(request.user):
+    #    return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
     if request.method == 'POST':
-        form = PersonalInfoForm(request.POST)
+        form = PersonalInfoForm()
         if form.is_valid():
+            form.save()
             return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
     else:
         form = PersonalInfoForm()
@@ -189,6 +194,7 @@ def create_account(request):
         if form.is_valid():
             user, created = User.objects.get_or_create(username=username, email=email)
             if created:
+                user.groups.add(Group.objects.get(name='Patient'))
                 user.set_password(password)  # This line will hash the password
                 print("USER PASSWORD IS: " + username + " " + password + "*******************************************")
                 user.save()  # DO NOT FORGET THIS LINE

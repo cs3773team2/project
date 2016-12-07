@@ -1,5 +1,5 @@
 from django import forms
-from .models import PersonalInfo, EMISUser
+from .models import PersonalInfo
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -18,8 +18,8 @@ class LoginForm(AuthenticationForm):
 class PersonalInfoForm(ModelForm):
     class Meta:
         model = PersonalInfo
-
-        fields = '__all__'
+        fields = ('mid_in','dob','age','sex',
+                  'address','city','state','zip','phone')
 
 
 ##checks if username exists
