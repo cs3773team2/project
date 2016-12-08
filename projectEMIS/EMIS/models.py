@@ -30,24 +30,21 @@ class PersonalInfo(models.Model):
     ins_name = models.CharField(max_length=30, default='')
     ins_mem_id = models.IntegerField(default=0)
     ins_grp_id = models.IntegerField(default=0)
-#    objects = UserManager()
 
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         PersonalInfo.objects.create(user=instance)
-        MedicalRecord.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.personalinfo.save()
-    #instance.medicalrecord.update()
 
 
 class MedicalRecord(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     date = models.DateTimeField(blank=True, null=True)
     height = models.CharField(max_length=10, default='')
     weight = models.CharField(max_length=10, default='')

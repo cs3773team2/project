@@ -145,38 +145,55 @@ def patIns(request):
         'ins_form': ins_form
     })
 
+def medRecDetail(request, usr_id, rec_id):
+    try:
+        rec = MedicalRecord.objects.get(pk=rec_id)
+    except MedicalRecord.DoesNotExist:
+        raise Http404("Medical Record does not exist.")
+    person = User.objects.get(pk=usr_id)
+    form = MedRecForm(instance=rec)
+    return render(request, 'EMIS/view_medRecDetail.html', {
+        'medrec': form,
+        'person': person
+        })
 
 @login_required(login_url='/')
 def patViewMedRec(request):
-    if request.method == 'POST':
-        user_form = ExtendUserForm(request.POST, instance=request.user)
-        medrec_form = MedRecForm(request.POST)
-        if user_form.is_valid() and medrec_form.is_valid():
-            medrec_form.save()
-            #messages.success(request, 'Yo')
-            return redirect('/pat_view-medrec/')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        medrec_form = MedRecForm()
-    return render(request, 'EMIS/pat_view-medrec.html', {
-        'medrec_form': medrec_form
-    })
+    items = MedicalRecord.objects.all().filter(user=request.user)
+    return render(request, 'EMIS/pat_view-medrec.html', {'items': items})
+#    if request.method == 'POST':
+#        user_form = ExtendUserForm(request.POST, instance=request.user)
+#        medrec_form = MedRecForm(request.POST)
+#        if user_form.is_valid() and medrec_form.is_valid():
+#            temp_rec = medrec_form.save(commit=False)
+#            temp_rec.user = request.user
+#            temp_rec.save()
+#            #messages.success(request, 'Yo')
+#            return redirect('/pat_view-medrec/')
+#        else:
+#            messages.error(request, 'Please correct the error below.')
+#    else:
+#        medrec_form = MedRecForm(instance=request.user)
+#    return render(request, 'EMIS/pat_view-medrec.html', {
+#        'medrec_form': medrec_form
+#    })
 
 
 @login_required(login_url='/')
 def patAddMedRec(request):
     if request.method == 'POST':
         user_form = ExtendUserForm(request.POST, instance=request.user)
-        medrec_form = AddMedRecForm(request.POST, instance=request.user)
+        medrec_form = AddMedRecForm(request.POST)
         if user_form.is_valid() and medrec_form.is_valid():
-            medrec_form.save()
+            temp_rec = medrec_form.save(commit=False)
+            temp_rec.user = request.user
+            temp_rec.save()
             #messages.success(request, 'Yo')
             return redirect('/pat_add-medrec/')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
-        medrec_form = AddMedRecForm(instance=request.user)
+        medrec_form = AddMedRecForm()
     return render(request, 'EMIS/pat_add-medrec.html', {
         'medrec_form': medrec_form
     })
