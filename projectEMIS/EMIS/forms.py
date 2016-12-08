@@ -1,5 +1,5 @@
 from django import forms
-from .models import PersonalInfo
+from .models import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -15,14 +15,20 @@ class LoginForm(AuthenticationForm):
                                widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'password'}))
 
 
-class PersonalInfoForm(ModelForm):
+class ExtendUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+
+class PersonalInfoForm(forms.ModelForm):
     class Meta:
         model = PersonalInfo
         fields = ('mid_in','dob','age','sex',
                   'address','city','state','zip','phone')
         labels = {
-            'mid_in': 'Insurance Name',
-            'dob': 'Member ID',
+            'mid_in': 'Middle Initial',
+            'dob': 'Date of Birth',
             'age': 'Age',
             'sex': 'Gender',
             'address': 'Address',
@@ -32,7 +38,8 @@ class PersonalInfoForm(ModelForm):
             'phone': 'Phone',
         }
 
-class InsInfoForm(ModelForm):
+
+class InsInfoForm(forms.ModelForm):
     class Meta:
         model = PersonalInfo
         fields = ('ins_name','ins_mem_id','ins_grp_id')
@@ -41,6 +48,37 @@ class InsInfoForm(ModelForm):
             'ins_mem_id': 'Member ID',
             'ins_grp_id': 'Group ID',
         }
+
+
+class MedRecForm(forms.ModelForm):
+    class Meta:
+        model = MedicalRecord
+        fields = ('date','height', 'weight', 'temp','blood_pres',
+                  'heart_rate','diag_code','prescription',
+                  'lab_order','notes')
+        labels = {
+            'date': 'Date of Service',
+            'height': 'Height',
+            'weight': 'Weight',
+            'temp': 'Temperature',
+            'blood_pres': 'Blood Pressure',
+            'heart_rate': 'Heart Rate',
+            'diag_code': 'Diag Code',
+            'prescription': 'Prescription',
+            'lab_order': 'Lab Order',
+            'notes': 'Notes',
+        }
+
+
+class AddMedRecForm(forms.ModelForm):
+    class Meta:
+        model = MedicalRecord
+        fields = ('date', 'notes')
+        labels = {
+            'date': 'Date of Service',
+            'notes': 'Description',
+        }
+
 
 ##checks if username exists
 def username_present(username):

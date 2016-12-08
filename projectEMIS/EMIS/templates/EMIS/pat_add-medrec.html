@@ -3,11 +3,11 @@
 {% block main %}
     <div id="content">
         <div class="innertube">
-            <h3>Insurance Information</h3>
-            <form method="post" action="/pat_ins-info/">
+            <h3>Please update your medical history:</h3>
+            <form method="post" action="/pat_add-medrec/">
                 {% csrf_token %}
                 <table>
-                    {{ ins_form }}
+                    {{ medrec_form }}
                 </table>
             <br>
             <input type="submit" class="login login-submit" value="Submit Updates">
@@ -17,5 +17,5 @@
 {% endblock %}
 
 {% block nav %}
-    > <a href="#">View/Update Insurance Information</a>
+    > <a href="#">View Medical Record</a>
 {% endblock %}}

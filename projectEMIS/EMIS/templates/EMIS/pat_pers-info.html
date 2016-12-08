@@ -63,7 +63,8 @@
             <form method="post" action="/pat_pers-info/">
                 {% csrf_token %}
                 <table>
-                    {{ form }}
+                    {{ user_form }}
+                    {{ profile_form }}
                 </table>
                 <br>
             <input type="submit" class="login login-submit" value="Submit Updates">

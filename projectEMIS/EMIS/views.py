@@ -14,6 +14,7 @@ from . models import EMISUser
 from django.core.mail import EmailMessage
 from . group_filter import *
 from django.contrib.auth.models import Group
+from django.contrib import messages
 from django.forms import modelformset_factory
 from django.template import RequestContext
 
@@ -105,31 +106,80 @@ def patient_home(request):
 
 @login_required(login_url='/')
 def patPI(request):
-    #form = PersonalInfoForm()
-    #if form.objects.get(request.user):
-    #    return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
     if request.method == 'POST':
-        form = PersonalInfoForm()
-        if form.is_valid():
-            form.save()
-            return render(request, 'EMIS/pat_pers-info.html', context={'user': request.user})
+        user_form = ExtendUserForm(request.POST, instance=request.user)
+        profile_form = PersonalInfoForm(request.POST, instance=request.user.personalinfo)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('/pat_pers-info/')
+        else:
+            messages.error(request, 'Please correct the error below.')
     else:
-        form = PersonalInfoForm()
-
-    return render(request, 'EMIS/pat_pers-info.html', {'form': form})
+        user_form = ExtendUserForm(instance=request.user)
+        profile_form = PersonalInfoForm(instance=request.user.personalinfo)
+    return render(request, 'EMIS/pat_pers-info.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+        })
 
 
 @login_required(login_url='/')
 def patIns(request):
     if request.method == 'POST':
-        form = InsInfoForm()
-        if form.is_valid():
-            form.save()
-            return render(request, 'EMIS/pat_ins-info.html', context={'user': request.user})
+        user_form = ExtendUserForm(request.POST, instance=request.user)
+        ins_form = InsInfoForm(request.POST, instance=request.user.personalinfo)
+        if user_form.is_valid() and ins_form.is_valid():
+            #user_form.save()
+            ins_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('/pat_ins-info/')
+        else:
+            messages.error(request, 'Please correct the error below.')
     else:
-        form = InsInfoForm()
+        #user_form = ExtendUserForm(instance=request.user)
+        ins_form = InsInfoForm(instance=request.user.personalinfo)
+    return render(request, 'EMIS/pat_ins-info.html', {
+        #'user_form': user_form,
+        'ins_form': ins_form
+    })
 
-    return render(request, 'EMIS/pat_ins-info.html', {'form': form})
+
+@login_required(login_url='/')
+def patViewMedRec(request):
+    if request.method == 'POST':
+        user_form = ExtendUserForm(request.POST, instance=request.user)
+        medrec_form = MedRecForm(request.POST)
+        if user_form.is_valid() and medrec_form.is_valid():
+            medrec_form.save()
+            #messages.success(request, 'Yo')
+            return redirect('/pat_view-medrec/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        medrec_form = MedRecForm()
+    return render(request, 'EMIS/pat_view-medrec.html', {
+        'medrec_form': medrec_form
+    })
+
+
+@login_required(login_url='/')
+def patAddMedRec(request):
+    if request.method == 'POST':
+        user_form = ExtendUserForm(request.POST, instance=request.user)
+        medrec_form = AddMedRecForm(request.POST, instance=request.user)
+        if user_form.is_valid() and medrec_form.is_valid():
+            medrec_form.save()
+            #messages.success(request, 'Yo')
+            return redirect('/pat_add-medrec/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        medrec_form = AddMedRecForm(instance=request.user)
+    return render(request, 'EMIS/pat_add-medrec.html', {
+        'medrec_form': medrec_form
+    })
 
 
 @doctor
