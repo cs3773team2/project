@@ -26,8 +26,8 @@
 				<div class="innertube">
 					<h3>Doctor Menu</h3>
 					<ul>
-						<li><a href="#">View Medical Record</a></li>
-						<li><a href="#">Add Medical Record</a></li>
+						<li><a href="{% url 'docViewPatients' %}">View Medical Record</a></li>
+						<li><a href="{% url 'docAddMedRec' %}">Add Medical Record</a></li>
 						<li><a href="#">View Patient Information</a></li>
 						<li><a href="#">View Calendar</a></li>
 						<li><a href="#">Submit Prescription</a></li>
@@ -39,7 +39,7 @@
 
         <footer id="footer">
 			<div class="innertube">
-				<li align="left"><a href="/patient_home/">Doctor Home</a> {% block nav %} {% endblock %}</li>
+				<li align="left"><a href="/doctor_home/">Doctor Home</a> {% block nav %} {% endblock %}</li>
 			</div>
 		</footer>
 	</body>

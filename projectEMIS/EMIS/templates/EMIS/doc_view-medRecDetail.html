@@ -1,16 +1,16 @@
 <link rel="stylesheet" href="../../static/EMIS/style.css">
-{% extends "patient.html" %}
+{% extends "doctor.html" %}
 {% block main %}
     <div id="content">
         <div class="innertube">
             <h3>Record Detail for {{ person.first_name }} {{ person.last_name }}</h3>
             <table>
-                {{ medrec }}
+                {{ detail }}
             </table>
         </div>
     </div>
 {% endblock %}
 
 {% block nav %}
-    > <a href="#">View Medical Record</a>
+    > <a href="{% url 'docViewPatients' %}">View Patients</a> > <a href="#">View Medical Record</a> > <a href="#">Medical Record Detail</a>
 {% endblock %}}

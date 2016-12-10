@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="../../static/EMIS/style.css">
+{% extends "doctor.html" %}
+{% block main %}
+    <div id="content">
+        <div class="innertube">
+            <h3>Please select a patient:</h3>
+            {% for field in items %}
+                <table>
+                    <tr><a href="{{ field.id }}">{{ field.first_name }} {{ field.last_name }}</a></tr>
+                </table>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block nav %}
+    > <a href="#">View Patients</a>
+{% endblock %}}

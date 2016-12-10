@@ -80,6 +80,27 @@ class AddMedRecForm(forms.ModelForm):
         }
 
 
+class docAddMedRecForm(forms.ModelForm):
+    patient = forms.ModelChoiceField(queryset=User.objects.all())
+
+    class Meta:
+        model = MedicalRecord
+        fields = ('patient', 'date', 'height', 'weight', 'temp', 'blood_pres',
+                  'heart_rate', 'diag_code', 'prescription',
+                  'lab_order', 'notes')
+        labels = {
+            'patient': 'Patient',
+            'date': 'Date of Service',
+            'height': 'Height',
+            'weight': 'Weight',
+            'temp': 'Temperature',
+            'blood_pres': 'Blood Pressure',
+            'heart_rate': 'Heart Rate',
+            'diag_code': 'Diag Code',
+            'prescription': 'Prescription',
+            'lab_order': 'Lab Order',
+            'notes': 'Notes',
+        }
 ##checks if username exists
 def username_present(username):
     if User.objects.filter(username=username).exists():

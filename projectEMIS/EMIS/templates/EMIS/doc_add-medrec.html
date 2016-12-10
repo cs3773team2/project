@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="../../static/EMIS/style.css">
-{% extends "patient.html" %}
+{% extends "doctor.html" %}
 {% block main %}
     <div id="content">
         <div class="innertube">
-            <h3>Please update your medical history:</h3>
-            <form method="post" action="/pat_add-medrec/">
+            <h3>Please fill out the information:</h3>
+            <form method="post" action="/doc_add-medrec/">
                 {% csrf_token %}
                 <table>
                     {{ medrec_form }}
@@ -17,5 +17,5 @@
 {% endblock %}
 
 {% block nav %}
-    > <a href="#">Add Medical History</a>
+    > <a href="#">Add Medical Record</a>
 {% endblock %}}
