@@ -80,12 +80,17 @@ class AddMedRecForm(forms.ModelForm):
         }
 
 
+class CustomModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return "%s, %s" % (obj.last_name, obj.first_name)
+
+
 class docAddMedRecForm(forms.ModelForm):
-    patient = forms.ModelChoiceField(queryset=User.objects.all())
+    patient = CustomModelChoiceField(queryset=User.objects.exclude(username='admin'))
 
     class Meta:
         model = MedicalRecord
-        fields = ('patient', 'date', 'height', 'weight', 'temp', 'blood_pres',
+        fields = ('patient','date', 'height', 'weight', 'temp', 'blood_pres',
                   'heart_rate', 'diag_code', 'prescription',
                   'lab_order', 'notes')
         labels = {
@@ -101,6 +106,8 @@ class docAddMedRecForm(forms.ModelForm):
             'lab_order': 'Lab Order',
             'notes': 'Notes',
         }
+
+
 ##checks if username exists
 def username_present(username):
     if User.objects.filter(username=username).exists():

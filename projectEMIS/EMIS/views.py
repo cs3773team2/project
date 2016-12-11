@@ -213,10 +213,10 @@ def docViewMedRecDetail(request, usr_id, rec_id):
 def docAddMedRec(request):
     if request.method == 'POST':
         medrec_form = docAddMedRecForm(request.POST)
-        patient = request.POST.get('patient')
+        patient = User.objects.get(id=request.POST.get('patient'))
         if medrec_form.is_valid():
             temp_rec = medrec_form.save(commit=False)
-            temp_rec.user = User.objects.get(id=patient)
+            temp_rec.user = patient
             temp_rec.save()
             return redirect('/doc_add-medrec/')
         else:
