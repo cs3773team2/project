@@ -104,8 +104,9 @@ html, body {
 }
 
 #header {
-	background: #6D7993;
-	height: 100px;
+	background: #555555;
+    color: #F7F7F7;
+    height: 100px;
 }
 
 #header h1 {
@@ -114,7 +115,7 @@ html, body {
 }
 
 main {
-	background: #EFEFEF;
+	background: #e5e5e5;
     padding-bottom: 100%;
 	float: left;
 	width: 100%;
@@ -135,7 +136,7 @@ main {
     left: 0;
     clear: left;
 	width: 100%;
-	background: #6D7993;
+	background: #555555;
 	text-align: left;
 	padding: 4px 0;
 }
@@ -153,6 +154,21 @@ main {
 .innertube {
 	margin: 15px; /* Padding for content */
 	margin-top: 0;
+}
+
+.innertube a {
+  text-decoration: none;
+  color: black;
+  font-weight: 400;
+  text-align: center;
+  display: inline-block;
+  opacity: 0.7;
+  transition: opacity ease 0.5s;
+}
+
+.innertube a:hover {
+  opacity: 1;
+  color: orangered;
 }
 
 p {
