@@ -112,7 +112,7 @@ def patPI(request):
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('/pat_pers-info/')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the error above.')
     else:
         user_form = ExtendUserForm(instance=request.user)
         profile_form = PersonalInfoForm(instance=request.user.personalinfo)
@@ -132,7 +132,7 @@ def patIns(request):
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('/pat_ins-info/')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the error above.')
     else:
         ins_form = InsInfoForm(instance=request.user.personalinfo)
     return render(request, 'EMIS/pat_ins-info.html', {
@@ -171,7 +171,7 @@ def patAddMedRec(request):
             messages.success(request, 'Record added successfully!')
             return redirect('/pat_add-medrec/')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the error above.')
     else:
         medrec_form = AddMedRecForm()
     return render(request, 'EMIS/pat_add-medrec.html', {
@@ -216,7 +216,7 @@ def docAddMedRec(request):
             messages.success(request, 'Record added successfully!')
             return redirect('/doc_add-medrec/')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the error above.')
     else:
         medrec_form = docAddMedRecForm()
     return render(request, 'EMIS/doc_add-medrec.html', {
