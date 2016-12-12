@@ -3,64 +3,7 @@
 {% block main %}
     <div id="content">
         <div class="innertube">
-            <h3>Patient Information</h3>
-            <!--form action="/patPI/" method = "post">
-                <table cellpadding="0" class="main">
-                    <tbody>
-                        <tr>
-                            <td><div align="left">First Name</div></td>
-                            <td><div align="left">Last Name</div></td>
-                            <td><div align="left">M.I.</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="f_name"></td>
-                            <td><input type="text" name="l_name"></td>
-                            <td><input type="text" name="mid_in"></td>
-                        </tr>
-                        <tr height="15"></tr>
-                        <tr>
-                            <td><div align="left">Date Of Birth</div></td>
-                            <td><div align="left">Age</div></td>
-                            <td><div align="left">Sex</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="dob"></td>
-                            <td><input type="text" name="age"></td>
-                            <td><input type="text" name="sex"></td>
-                        </tr>
-                        <tr height="15"></tr>
-                        <tr>
-                            <td><div align="left">Address</div></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><input type="text" name="address" class="formtext"></td>
-                        </tr>
-                        <tr height="15"></tr>
-                        <tr>
-                            <td><div align="left">City</div></td>
-                            <td><div align="left">State</div></td>
-                            <td><div align="left">Zip</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="city"></td>
-                            <td><input type="text" name="state"></td>
-                            <td><input type="text" name="zip"></td>
-                        </tr>
-                        <tr height="15"></tr>
-                        <tr>
-                            <td><div align="left">Phone</div></td>
-                            <td><div align="left">Email</div></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="phone"></td>
-                            <td colspan="2"><input type="text" name="email" class="formtext"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
-                <input type="submit" class="login login-submit" value="Submit Updates">
-            </form-->
-            <form method="post" action="/pat_pers-info/">
+            <h3>Patient Information</h3><form method="post" action="/pat_pers-info/">
                 {% csrf_token %}
                 <table>
                     {{ user_form }}
@@ -69,6 +12,14 @@
                 <br>
             <input type="submit" class="login login-submit" value="Submit Updates">
             </form>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -3,7 +3,6 @@ import uuid
 from . forms import *
 from django.shortcuts import *
 from django.http import *
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import auth
@@ -15,8 +14,6 @@ from django.core.mail import EmailMessage
 from . group_filter import *
 from django.contrib.auth.models import Group
 from django.contrib import messages
-from django.forms import modelformset_factory
-from django.template import RequestContext
 
 
 @requires_csrf_token
@@ -131,17 +128,14 @@ def patIns(request):
         user_form = ExtendUserForm(request.POST, instance=request.user)
         ins_form = InsInfoForm(request.POST, instance=request.user.personalinfo)
         if user_form.is_valid() and ins_form.is_valid():
-            #user_form.save()
             ins_form.save()
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('/pat_ins-info/')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
-        #user_form = ExtendUserForm(instance=request.user)
         ins_form = InsInfoForm(instance=request.user.personalinfo)
     return render(request, 'EMIS/pat_ins-info.html', {
-        #'user_form': user_form,
         'ins_form': ins_form
     })
 
@@ -174,6 +168,7 @@ def patAddMedRec(request):
             temp_rec = medrec_form.save(commit=False)
             temp_rec.user = request.user
             temp_rec.save()
+            messages.success(request, 'Record added successfully!')
             return redirect('/pat_add-medrec/')
         else:
             messages.error(request, 'Please correct the error below.')
@@ -218,6 +213,7 @@ def docAddMedRec(request):
             temp_rec = medrec_form.save(commit=False)
             temp_rec.user = patient
             temp_rec.save()
+            messages.success(request, 'Record added successfully!')
             return redirect('/doc_add-medrec/')
         else:
             messages.error(request, 'Please correct the error below.')
