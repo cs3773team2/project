@@ -11,9 +11,13 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
 from . models import EMISUser
 from django.core.mail import EmailMessage
+from django.shortcuts import redirect
+from django.template import Context
+from django.template.loader import get_template
 from . group_filter import *
 from django.contrib.auth.models import Group
 from django.contrib import messages
+
 
 
 @requires_csrf_token
@@ -332,3 +336,46 @@ def create_account(request):
     else:
         form = UserForm()
     return render(request, 'create_account.html', {'form': form})
+
+
+# @login_required(login_url='/')
+def contact(request):
+    """
+    Contact form from which one can send emails. Basic text only so far.
+    TODO: need link to contact form instead of directly typing in URL
+    """
+    form_class = ContactForm
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        if form.is_valid():
+            contact_name = request.POST.get(
+                'contact_name',
+                ''
+            )
+            contact_email = request.POST.get(
+                'contact_email',
+                ''
+            )
+            form_content = request.POST.get('content', '')
+
+            # Email the profile with the contact information
+            template = get_template('contact_template.txt')
+            context = Context({
+                'contact_name': contact_name,
+                'contact_email': contact_email,
+                'form_content': form_content,
+            })
+            content = template.render(context)
+
+            email = EmailMessage(
+                "New contact form submission",
+                content,
+                "Your website" +'',
+                [contact_email],
+                headers = {'Reply-To': contact_email}
+            )
+            email.send()
+            return redirect('contact')
+    return render(request, 'contact.html', {
+        'form': form_class,
+    })

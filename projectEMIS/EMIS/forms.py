@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 from passwords.validators import (
     DictionaryValidator, LengthValidator, ComplexityValidator)
@@ -145,3 +146,21 @@ class UserForm(ModelForm):
     #         user.save()
     #         EMISUser.objects.create(user=user)
     #     return user
+
+
+class ContactForm(forms.Form):
+    """
+    Used for contact.html email sending.
+    """
+    contact_name = forms.CharField(required=True)
+    contact_email = forms.EmailField(required=True)
+    content = forms.CharField(
+        required=True,
+        widget=forms.Textarea,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.fields['contact_name'].label = "Contact name:"
+        self.fields['contact_email'].label = "Contact email:"
+        self.fields['content'].label = "Email body:"

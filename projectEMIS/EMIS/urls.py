@@ -22,10 +22,11 @@ urlpatterns = [
                                                                             name='docViewMedRecDetail'),
     url(r'^doc_add-medrec/$', views.docAddMedRec, name='docAddMedRec'),
     url(r'^cstaff_home/$', views.cstaff_home, name='cstaff_home'),
-    #url(r'^cstaff_createuser/$', views.cstaff_createuser, name='cstaff_createuser'),
+    # url(r'^cstaff_createuser/$', views.cstaff_createuser, name='cstaff_createuser'),
     url(r'^nurse_home/$', views.nurse_home, name='nurse_home'),
     url(r'^lab_home/$', views.lab_home, name='lab_home'),
     url(r'^pharmacy_home/$', views.pharmacy_home, name='pharmacy_home'),
     url(r'^insurance_home/$', views.insurance_home, name='insurance_home'),
     url(r'^user_not_auth/$', views.user_not_auth, name='user_not_auth'),
+    url(r'^contact/$', views.contact, name='contact')
 ]
