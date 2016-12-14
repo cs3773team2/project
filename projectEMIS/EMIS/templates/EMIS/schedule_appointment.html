@@ -3,12 +3,13 @@
 
 {% block main %}
     <div id="content">
-<h1>Schedule Appointment</h1>
-<form role="form" action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+        <div class="innertube">
+            <h1>Schedule Appointment</h1>
+            <form role="form" action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
-
 {% endblock %}
