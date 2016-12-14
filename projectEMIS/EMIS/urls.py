@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^pharmacy_home/$', views.pharmacy_home, name='pharmacy_home'),
     url(r'^insurance_home/$', views.insurance_home, name='insurance_home'),
     url(r'^user_not_auth/$', views.user_not_auth, name='user_not_auth'),
+    url(r'^schedule_appointment/$', views.schedule_appointment, name='schedule_appointment'),
     url(r'^contact/$', views.contact, name='contact')
 ]

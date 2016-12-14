@@ -164,3 +164,21 @@ class ContactForm(forms.Form):
         self.fields['contact_name'].label = "Contact name:"
         self.fields['contact_email'].label = "Contact email:"
         self.fields['content'].label = "Email body:"
+
+
+class ScheduleAppointmentForm(forms.Form):
+    """
+    Used for contact.html email sending.
+    """
+    contact_name = forms.CharField(required=True)
+    # contact_email = forms.EmailField(required=True)
+    content = forms.CharField(
+        required=True,
+        widget=forms.Textarea,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ScheduleAppointmentForm, self).__init__(*args, **kwargs)
+        self.fields['contact_name'].label = "Your name:"
+        # self.fields['contact_email'].label = "Contact email:"
+        self.fields['content'].label = "Email body:"
