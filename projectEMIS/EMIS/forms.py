@@ -153,7 +153,7 @@ class ContactForm(forms.Form):
     Used for contact.html email sending.
     """
     contact_name = forms.CharField(required=True)
-    contact_email = forms.EmailField(help_text='Enter a valid email address.', required=True)
+    contact_email = forms.EmailField(required=True)
     content = forms.CharField(
         required=True,
         widget=forms.Textarea,

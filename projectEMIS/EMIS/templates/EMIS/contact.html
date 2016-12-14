@@ -1,11 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'patient.html' %}
 {% block title %}Contact - {{ block.super }}{% endblock %}
 
-{% block content %}
+{% block main %}
+    <div id="content"
 <h1>Contact</h1>
 <form role="form" action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
 </form>
+    </div>
+
 {% endblock %}
