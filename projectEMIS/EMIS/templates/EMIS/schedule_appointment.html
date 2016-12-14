@@ -1,0 +1,14 @@
+{% extends 'patient.html' %}
+{% block title %}Schedule Appointment - {{ block.super }}{% endblock %}
+
+{% block main %}
+    <div id="content">
+<h1>Schedule Appointment</h1>
+<form role="form" action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+    </div>
+
+{% endblock %}

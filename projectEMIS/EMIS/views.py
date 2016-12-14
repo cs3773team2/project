@@ -386,19 +386,22 @@ def contact(request):
                 'contact_name',
                 ''
             )
+            # TODO: get email from EMIS user field, then replace
             contact_email = request.POST.get(
                 'contact_email',
                 ''
             )
-            form_content = request.POST.get('content', '')
 
+            user_email = request.user.email
+            form_content = request.POST.get('content', '')
             # Email the profile with the contact information
             template = get_template('contact_template.txt')
             context = Context({
                 'contact_name': contact_name,
+                'user_email': user_email,
                 'contact_email': contact_email,
                 'form_content': form_content,
-            })
+                })
             content = template.render(context)
 
             email = EmailMessage(
@@ -411,5 +414,44 @@ def contact(request):
             email.send()
             return redirect('contact')
     return render(request, 'contact.html', {
+        'form': form_class,
+    })
+
+def schedule_appointment(request):
+    """
+    Like contact, but specifically to email the admin.
+    """
+    form_class = ScheduleAppointmentForm
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        if form.is_valid():
+            contact_name = request.POST.get(
+                'contact_name',
+                ''
+            )
+            contact_email = 'cs3773team2@gmail.com'
+            user_email = request.user.email
+            form_content = request.POST.get('content', '')
+
+            # Email the profile with the contact information
+            template = get_template('contact_template.txt')
+            context = Context({
+                'contact_name': contact_name,
+                'contact_email': contact_email,
+                'user_email': user_email,
+                'form_content': form_content,
+            })
+            content = template.render(context)
+            subject = 'Patient %s requesting an appointment scheduling.' % contact_name
+            email = EmailMessage(
+                subject,
+                content,
+                "Your website" +'',
+                [contact_email],
+                headers = {'Reply-To': contact_email}
+            )
+            email.send()
+            return redirect('schedule_appointment')
+    return render(request, 'schedule_appointment.html', {
         'form': form_class,
     })
