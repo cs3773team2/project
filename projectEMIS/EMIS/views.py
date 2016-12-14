@@ -9,7 +9,7 @@ from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
-from . models import EMISUser
+from . models import *
 from django.core.mail import EmailMessage
 from django.shortcuts import redirect
 from django.template import Context
@@ -17,7 +17,7 @@ from django.template.loader import get_template
 from . group_filter import *
 from django.contrib.auth.models import Group
 from django.contrib import messages
-
+from django.shortcuts import render_to_response
 
 
 @requires_csrf_token
@@ -336,6 +336,40 @@ def create_account(request):
     else:
         form = UserForm()
     return render(request, 'create_account.html', {'form': form})
+
+
+def addCalendar(request):
+    if request.method == 'POST':
+        addevent_form = docAddEvent(request.POST)
+        patient = User.objects.get(id=request.POST.get('patient'))
+        if addevent_form.is_valid():
+            temp_rec = addevent_form.save(commit=False)
+            temp_rec.user = patient
+            temp_rec.save()
+            messages.success(request, 'Record added successfully!')
+            return redirect('/doc_add-cal/')
+        else:
+            messages.error(request, 'Please correct the error above.')
+    else:
+        addevent_form = docAddEvent()
+
+    return render_to_response('EMIS/doc_add-cal.html', {'medrec_form': addevent_form})
+
+
+@login_required(login_url='/')
+def docCalPatients(request):
+    items = User.objects.all()
+    return render(request, 'EMIS/doc_cal-patients.html', {'items': items})
+
+
+@login_required(login_url='/')
+def viewCalendar(request, usr_id):
+    person = User.objects.get(pk=usr_id)
+    items = Event.objects.all().filter(user=person)
+    return render(request, 'EMIS/doc_view-cal.html', {
+        'items': items,
+        'person': person
+    })
 
 
 # @login_required(login_url='/')

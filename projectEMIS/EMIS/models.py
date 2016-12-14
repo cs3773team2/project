@@ -57,3 +57,12 @@ class MedicalRecord(models.Model):
     notes = models.TextField(default='')
     #document = models.FileField(upload_to='uploads/')
     #image = models.ImageField(upload_to='uploads/')
+
+
+class Event(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    my_date = models.DateTimeField(blank=True, null=True)
+    year = models.DateField(blank=True, null=True)
+    month = models.DateField(blank=True, null=True)
+
+

@@ -108,6 +108,17 @@ class docAddMedRecForm(forms.ModelForm):
             'notes': 'Notes',
         }
 
+class docAddEvent(forms.ModelForm):
+    patient = CustomModelChoiceField(queryset=User.objects.exclude(username='admin'))
+
+    class Meta:
+        model = Event
+        fields = ('patient', 'my_date')
+        labels = {
+            'patient': 'Patient',
+            'my_date': 'Add Appointment',
+        }
+
 
 ##checks if username exists
 def username_present(username):
