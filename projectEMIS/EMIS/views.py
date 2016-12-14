@@ -9,7 +9,7 @@ from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
-from . models import EMISUser
+from . models import *
 from django.core.mail import EmailMessage
 from django.shortcuts import redirect
 from django.template import Context
@@ -17,7 +17,7 @@ from django.template.loader import get_template
 from . group_filter import *
 from django.contrib.auth.models import Group
 from django.contrib import messages
-
+from django.shortcuts import render_to_response
 
 
 @requires_csrf_token
@@ -338,6 +338,40 @@ def create_account(request):
     return render(request, 'create_account.html', {'form': form})
 
 
+def addCalendar(request):
+    if request.method == 'POST':
+        addevent_form = docAddEvent(request.POST)
+        patient = User.objects.get(id=request.POST.get('patient'))
+        if addevent_form.is_valid():
+            temp_rec = addevent_form.save(commit=False)
+            temp_rec.user = patient
+            temp_rec.save()
+            messages.success(request, 'Record added successfully!')
+            return redirect('/doc_add-cal/')
+        else:
+            messages.error(request, 'Please correct the error above.')
+    else:
+        addevent_form = docAddEvent()
+
+    return render_to_response('EMIS/doc_add-cal.html', {'medrec_form': addevent_form})
+
+
+@login_required(login_url='/')
+def docCalPatients(request):
+    items = User.objects.all()
+    return render(request, 'EMIS/doc_cal-patients.html', {'items': items})
+
+
+@login_required(login_url='/')
+def viewCalendar(request, usr_id):
+    person = User.objects.get(pk=usr_id)
+    items = Event.objects.all().filter(user=person)
+    return render(request, 'EMIS/doc_view-cal.html', {
+        'items': items,
+        'person': person
+    })
+
+
 # @login_required(login_url='/')
 def contact(request):
     """
@@ -356,15 +390,17 @@ def contact(request):
                 'contact_email',
                 ''
             )
-            form_content = request.POST.get('content', '')
 
+            user_email = request.user.email
+            form_content = request.POST.get('content', '')
             # Email the profile with the contact information
             template = get_template('contact_template.txt')
             context = Context({
                 'contact_name': contact_name,
+                'user_email': user_email,
                 'contact_email': contact_email,
                 'form_content': form_content,
-            })
+                })
             content = template.render(context)
 
             email = EmailMessage(
@@ -377,5 +413,44 @@ def contact(request):
             email.send()
             return redirect('contact')
     return render(request, 'contact.html', {
+        'form': form_class,
+    })
+
+def schedule_appointment(request):
+    """
+    Like contact, but specifically to email the admin.
+    """
+    form_class = ScheduleAppointmentForm
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        if form.is_valid():
+            contact_name = request.POST.get(
+                'contact_name',
+                ''
+            )
+            contact_email = 'cs3773team2@gmail.com'
+            user_email = request.user.email
+            form_content = request.POST.get('content', '')
+
+            # Email the profile with the contact information
+            template = get_template('contact_template.txt')
+            context = Context({
+                'contact_name': contact_name,
+                'contact_email': contact_email,
+                'user_email': user_email,
+                'form_content': form_content,
+            })
+            content = template.render(context)
+            subject = 'Patient %s requesting an appointment scheduling.' % contact_name
+            email = EmailMessage(
+                subject,
+                content,
+                "Your website" +'',
+                [contact_email],
+                headers = {'Reply-To': contact_email}
+            )
+            email.send()
+            return redirect('schedule_appointment')
+    return render(request, 'schedule_appointment.html', {
         'form': form_class,
     })

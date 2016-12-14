@@ -3,12 +3,12 @@
 {% block main %}
     <div id="content">
         <div class="innertube">
-            <h3>Please select a record:</h3>
-            {% for field in items %}
-                <table>
-                    <tr><a href="{{ field.user_id }}/{{ field.id }}">{{ field.date }}</a></tr>
-                </table>
+            <h3>Appointment detail for {{ person.first_name }} {{ person.last_name }}</h3>
+            {% for field in detail %}
+                {{ field }}
             {% endfor %}
+
+            {{ detail }}
         </div>
     </div>
 {% endblock %}

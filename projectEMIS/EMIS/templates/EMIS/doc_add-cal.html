@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="../../static/EMIS/style.css">
+{% extends "doctor.html" %}
+{% block main %}
+    <div id="content">
+        <form method="post" action="/doc_add-cal/">
+            {% csrf_token %}
+            <table>
+                {{ medrec_form }}
+            </table>
+            <br>
+            <div class="innertube"><input type="submit" class="login login-submit" value="Submit Updates"></div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block nav %}
+    > <a href="#">View Calendar</a>
+{% endblock %}}

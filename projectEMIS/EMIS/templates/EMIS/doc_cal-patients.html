@@ -3,10 +3,10 @@
 {% block main %}
     <div id="content">
         <div class="innertube">
-            <h3>Please select a record:</h3>
+            <h3>Please select a patient:</h3>
             {% for field in items %}
                 <table>
-                    <tr><a href="{{ field.user_id }}/{{ field.id }}">{{ field.date }}</a></tr>
+                    <tr><a href="{{ field.id }}">{{ field.first_name }} {{ field.last_name }}</a></tr>
                 </table>
             {% endfor %}
         </div>
@@ -14,5 +14,5 @@
 {% endblock %}
 
 {% block nav %}
-    > <a href="{% url 'docViewPatients' %}">View Patients</a> > <a href="#">View Medical Record</a>
+    > <a href="#">View Patients</a>
 {% endblock %}}

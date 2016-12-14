@@ -108,6 +108,17 @@ class docAddMedRecForm(forms.ModelForm):
             'notes': 'Notes',
         }
 
+class docAddEvent(forms.ModelForm):
+    patient = CustomModelChoiceField(queryset=User.objects.exclude(username='admin'))
+
+    class Meta:
+        model = Event
+        fields = ('patient', 'my_date')
+        labels = {
+            'patient': 'Patient',
+            'my_date': 'Add Appointment',
+        }
+
 
 ##checks if username exists
 def username_present(username):
@@ -170,3 +181,23 @@ class ContactForm(forms.Form):
         self.fields['contact_name'].label = "Contact name:"
         self.fields['contact_email'].label = "Contact email:"
         self.fields['content'].label = "Email body:"
+
+
+class ScheduleAppointmentForm(forms.Form):
+    """
+    Used for contact.html email sending.
+    """
+    contact_name = forms.CharField(required=True)
+    # contact_email = forms.EmailField(required=True)
+    date = forms.DateTimeField(required=True)
+    content = forms.CharField(
+        required=True,
+        widget=forms.Textarea,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ScheduleAppointmentForm, self).__init__(*args, **kwargs)
+        self.fields['contact_name'].label = "Your name:"
+        # self.fields['contact_email'].label = "Contact email:"
+        self.fields['date'].label = "Appointment Date/Time"
+        self.fields['content'].label = "Appointment Details"
