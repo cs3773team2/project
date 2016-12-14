@@ -116,6 +116,7 @@ def username_present(username):
     return False
 
 
+
 class UserForm(ModelForm):
     """
     Used to create accounts.  Not used to login
@@ -123,13 +124,18 @@ class UserForm(ModelForm):
     username = forms.CharField(label="Username", max_length=30,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'username'}))
 
-#    if username_present(username): # Comment this out when running python manage.py makemigrations or migrate
-#        raise forms.ValidationError("The username already exists.")
+    if username_present(username): # Comment this out when running python manage.py makemigrations or migrate
+        raise forms.ValidationError("The username already exists.")
 
     email = forms.CharField(label="Email", max_length=30,
                             widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'email'}))
 
     password = forms.CharField(validators=[
+        DictionaryValidator(words=['banned_word'], threshold=0.9),
+        LengthValidator(min_length=8),
+        ComplexityValidator(complexities=dict(UPPER=1, LOWER=1, DIGITS=1)), ])
+
+    password_verify = forms.CharField(validators=[
         DictionaryValidator(words=['banned_word'], threshold=0.9),
         LengthValidator(min_length=8),
         ComplexityValidator(complexities=dict(UPPER=1, LOWER=1, DIGITS=1)), ])
