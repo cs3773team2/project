@@ -386,7 +386,6 @@ def contact(request):
                 'contact_name',
                 ''
             )
-            # TODO: get email from EMIS user field, then replace
             contact_email = request.POST.get(
                 'contact_email',
                 ''
